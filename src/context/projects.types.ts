@@ -1,14 +1,18 @@
 // Types, interfaces and enumns:
 export interface Task {
-  id: string;
+  taskId: string;
+  projectId: string;
   title: string;
   cleared: boolean;
 }
 export interface Project {
-  id: string;
+  projectId: string;
+  userId: string;
   title: string;
   description: string;
+  createdAt: Date;
   dueDate: Date;
+  completed: boolean;
   tasks: Task[];
 }
 export type Projects = Project[];
