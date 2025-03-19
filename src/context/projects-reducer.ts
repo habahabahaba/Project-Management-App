@@ -1,14 +1,6 @@
 // 3rd party:
 // Utils:
 import generateId from '../utils/generateId';
-// Redux RTK:
-// Store:
-// React Router:
-// React:
-// Context:
-// Hooks:
-// Components:
-// CSS:
 // Types, interfaces and enumns:
 import type { Task, Project, Projects } from './projects.types';
 type AddProjectPayload = Pick<
@@ -69,13 +61,48 @@ export default function projectsReducer(
   action: ProjectsAction
 ): Projects | never {
   switch (action.type) {
-    // case 'ADD_PROJECT':
-    //   const newProject: Project = {};
-    case 'DELETE_PROJECT':
+    case 'ADD_PROJECT': {
+      const newProject = new ProjectModel(action.payload);
+
+      console.log(`[ADD_PROJECT]: ${JSON.stringify(newProject, null, 2)}`);
+
+      return [newProject, ...state];
+    }
+    case 'DELETE_PROJECT': {
+      console.log(`[DELETE_PROJECT]: ${action.payload.projectId}`);
+
       return state.filter(
         (project) => project.projectId !== action.payload.projectId
       );
+    }
+    case 'ADD_TASK': {
+      const newTask = new TaskModel(action.payload);
+
+      console.log(`[ADD_TASK]: ${JSON.stringify(newTask, null, 2)}`);
+
+      return state.map((project) =>
+        project.projectId === newTask.projectId
+          ? { ...project, tasks: [...project.tasks, newTask] }
+          : project
+      );
+    }
+    case 'CLEAR_TASK': {
+      console.log(
+        `[DELETE_PROJECT] projectId: ${action.payload.projectId}, taskId: ${action.payload.taskId}`
+      );
+
+      return state.map((project) =>
+        project.projectId === action.payload.projectId
+          ? {
+              ...project,
+              tasks: project.tasks.filter(
+                ({ taskId }) => taskId !== action.payload.taskId
+              ),
+            }
+          : project
+      );
+    }
     default:
-      throw new Error('projectsReducer encountered unknown action!');
+      throw new Error('[projectsReducer] encountered the UNKNOWN ACTION !!!');
   }
 }
