@@ -1,16 +1,20 @@
 // 3rd party:
+// Utils:
+import generateId from '../utils/generateId';
 // Redux RTK:
 // Store:
 // React Router:
 // React:
-import { useReducer } from 'react';
 // Context:
 // Hooks:
 // Components:
 // CSS:
 // Types, interfaces and enumns:
 import type { Task, Project, Projects } from './projects.types';
-type AddProjectPayload = Pick<Project, 'title' | 'description' | 'dueDate'>;
+type AddProjectPayload = Pick<
+  Project,
+  'userId' | 'title' | 'description' | 'dueDate'
+>;
 type AddTaskPayload = Pick<Task, 'projectId' | 'title'>;
 type ClearTaskPayload = Pick<Task, 'projectId' | 'taskId'>;
 
@@ -22,19 +26,42 @@ type ProjectsAction =
 
 class ProjectModel implements Project {
   constructor(constructorArgObj: AddProjectPayload) {
-    const { title, description, dueDate } = constructorArgObj;
+    const { userId, title, description, dueDate } = constructorArgObj;
+    this.userId = userId;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
+
+    this.projectId = generateId();
+    this.createdAt = new Date();
+    this.completed = false;
+    this.tasks = [];
   }
-  readonly projectId: string;
+
   readonly userId: string;
+  readonly projectId: string;
   readonly createdAt: Date;
   public title: string;
   public description: string;
   public dueDate: Date;
   public completed: boolean;
   public tasks: Task[];
+}
+
+class TaskModel implements Task {
+  constructor(constructorArgObj: AddTaskPayload) {
+    const { projectId, title } = constructorArgObj;
+    this.projectId = projectId;
+    this.title = title;
+
+    this.taskId = generateId();
+    this.cleared = false;
+  }
+
+  readonly projectId: string;
+  readonly taskId: string;
+  public title: string;
+  public cleared: boolean;
 }
 
 export default function projectsReducer(
