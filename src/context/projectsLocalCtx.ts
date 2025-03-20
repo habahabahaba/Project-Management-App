@@ -5,8 +5,8 @@ import type { Dispatch } from 'react';
 import type { Projects } from './projects.types';
 import type { ProjectsAction } from './projectsLocalReducer';
 type projectsLocalCtxValue = {
-  state: Projects;
-  dispatch: Dispatch<ProjectsAction>;
+  localState: Projects;
+  localDispatch: Dispatch<ProjectsAction>;
 } | null;
 
 const projectsLocalCtx = createContext<projectsLocalCtxValue>(null);

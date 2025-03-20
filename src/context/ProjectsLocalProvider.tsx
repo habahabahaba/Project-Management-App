@@ -26,8 +26,8 @@ const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   );
 
   const ctxValue = {
-    state: ProjectsLocalState,
-    dispatch: ProjectsLocalDispatch,
+    localState: ProjectsLocalState,
+    localDispatch: ProjectsLocalDispatch,
   };
 
   // JSX:
