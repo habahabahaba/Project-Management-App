@@ -16,7 +16,7 @@ export type ProjectsAction =
   | { type: 'ADD_TASK'; payload: AddTaskPayload }
   | { type: 'CLEAR_TASK'; payload: ClearTaskPayload };
 
-class ProjectModel implements Project {
+export class ProjectModel implements Project {
   constructor(addProjectPayload: AddProjectPayload) {
     const { userId, title, description, dueDate } = addProjectPayload;
     this.userId = userId;
@@ -40,7 +40,7 @@ class ProjectModel implements Project {
   public tasks: Task[];
 }
 
-class TaskModel implements Task {
+export class TaskModel implements Task {
   constructor(addTaskPayload: AddTaskPayload) {
     const { projectId, title } = addTaskPayload;
     this.projectId = projectId;
