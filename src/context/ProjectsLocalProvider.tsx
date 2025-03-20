@@ -3,7 +3,7 @@
 // Store:
 // React Router:
 // React:
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 // Reducer:
 import projectsLocalReducer from './projectsLocalReducer';
 // Context:
@@ -20,14 +20,20 @@ interface ProjectsLocalProviderProps {
 const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   children,
 }) => {
+  // For projects state:
   const [ProjectsLocalState, ProjectsLocalDispatch] = useReducer(
     projectsLocalReducer,
     []
   );
 
+  // For selecting a project:
+  const [selectedId, selectId] = useState<string | null>(null);
+
   const ctxValue = {
     localState: ProjectsLocalState,
     localDispatch: ProjectsLocalDispatch,
+    selectedId,
+    selectId,
   };
 
   // JSX:
