@@ -10,15 +10,15 @@ type AddProjectPayload = Pick<
 type AddTaskPayload = Pick<Task, 'projectId' | 'title'>;
 type ClearTaskPayload = Pick<Task, 'projectId' | 'taskId'>;
 
-type ProjectsAction =
+export type ProjectsAction =
   | { type: 'ADD_PROJECT'; payload: AddProjectPayload }
   | { type: 'DELETE_PROJECT'; payload: { projectId: string } }
   | { type: 'ADD_TASK'; payload: AddTaskPayload }
   | { type: 'CLEAR_TASK'; payload: ClearTaskPayload };
 
 class ProjectModel implements Project {
-  constructor(constructorArgObj: AddProjectPayload) {
-    const { userId, title, description, dueDate } = constructorArgObj;
+  constructor(addProjectPayload: AddProjectPayload) {
+    const { userId, title, description, dueDate } = addProjectPayload;
     this.userId = userId;
     this.title = title;
     this.description = description;
@@ -41,8 +41,8 @@ class ProjectModel implements Project {
 }
 
 class TaskModel implements Task {
-  constructor(constructorArgObj: AddTaskPayload) {
-    const { projectId, title } = constructorArgObj;
+  constructor(addTaskPayload: AddTaskPayload) {
+    const { projectId, title } = addTaskPayload;
     this.projectId = projectId;
     this.title = title;
 
@@ -56,7 +56,7 @@ class TaskModel implements Task {
   public cleared: boolean;
 }
 
-export default function projectsReducer(
+export default function projectsLocalReducer(
   state: Projects,
   action: ProjectsAction
 ): Projects | never {
