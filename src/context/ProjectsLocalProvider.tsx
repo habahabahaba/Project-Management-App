@@ -3,35 +3,37 @@
 // Store:
 // React Router:
 // React:
-import { useReducer, useState } from 'react';
+import { useReducer, useState } from "react";
 // Reducer:
-import projectsLocalReducer from './projectsLocalReducer';
+import projectsLocalReducer from "./projectsLocalReducer";
 // Context:
-import projectsLocalCtx from './projectsLocalCtx';
+import projectsLocalCtx from "./projectsLocalCtx";
 // Hooks:
 // Components:
 // CSS:
 // Types, interfaces and enumns:
-import type { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from "react";
 interface ProjectsLocalProviderProps {
   children: ReactNode;
 }
 
 // DEV ONLY DUMMY PROJECTS initial state:
-import type { Projects } from './projects.types';
-import { ProjectModel } from './projectsLocalReducer';
+import type { Projects } from "./projects.types";
+import { ProjectModel } from "./projectsLocalReducer";
 const initState: Projects = [
   new ProjectModel({
-    userId: '0',
-    title: 'Learn React',
-    description: 'Do learn React.',
-    dueDate: new Date('2025-09-01'),
+    userId: "0",
+    title: "Learning React",
+    description: `Learn React from the ground up.
+    
+Start with the basics, finish with advanced knowledge.`,
+    dueDate: new Date("2024-12-29"),
   }),
   new ProjectModel({
-    userId: '0',
-    title: 'Master React',
-    description: 'Do master React.',
-    dueDate: new Date('2025-11-01'),
+    userId: "0",
+    title: "Master React",
+    description: "Do master React.",
+    dueDate: new Date("2025-11-01"),
   }),
 ];
 
@@ -41,7 +43,7 @@ const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   // For projects state:
   const [ProjectsLocalState, ProjectsLocalDispatch] = useReducer(
     projectsLocalReducer,
-    initState
+    initState,
   );
 
   // For selecting a project:

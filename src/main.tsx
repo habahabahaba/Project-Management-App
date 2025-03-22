@@ -1,10 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+// React:
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+// Providers:
+import ProjectsLocalProvider from "./context/ProjectsLocalProvider";
+import "./index.css";
+import App from "./App.tsx";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ProjectsLocalProvider>
+      <App />
+    </ProjectsLocalProvider>
   </StrictMode>,
-)
+);

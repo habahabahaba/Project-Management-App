@@ -3,21 +3,25 @@
 // Store:
 // React Router:
 // React:
+import { use } from "react";
 // Context:
-import ProjectsLocalProvider from './context/ProjectsLocalProvider';
+import projectsLocalCtx from "./context/projectsLocalCtx";
 // Hooks:
 // Components:
-import Sidebar from './Components/Sidebar';
+import Sidebar from "./Components/Sidebar";
+import ProjectDetails from "./Components/ProjectDetails";
 // CSS:
 // Types, interfaces and enumns:
 
 function App() {
+  // Context:
+  const { selectedId } = use(projectsLocalCtx);
+  // JSX:
   return (
-    <ProjectsLocalProvider>
-      <main className='h-screen my-8 flex gap-8'>
-        <Sidebar />
-      </main>
-    </ProjectsLocalProvider>
+    <main className='my-8 flex h-screen gap-8'>
+      <Sidebar />
+      {selectedId ? <ProjectDetails /> : null}
+    </main>
   );
 }
 

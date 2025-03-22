@@ -17,10 +17,7 @@ interface ProjectsListItemProps {
 }
 
 const ProjectsListItem: FC<ProjectsListItemProps> = ({ projectId, title }) => {
-  const { selectedId, selectId } = use(projectsLocalCtx) || {
-    selectedId: null,
-    selectId() {},
-  };
+  const { selectedId, selectId } = use(projectsLocalCtx);
   const selected = selectedId === projectId;
   // JSX:
   return (
