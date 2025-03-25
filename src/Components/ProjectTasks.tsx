@@ -30,10 +30,9 @@ const ProjectTasks: FC<ProjectTasksProps> = ({ projectId, tasks }) => {
     currentState: string,
     formData: FormData,
   ): Promise<string> {
-    // Safeguard:
-    if (!formData) return "please enter a title";
     // Validation:
-    let title = formData.get("task_title") as string;
+    let title = formData.get("task_title");
+    if (typeof title !== "string") return "please enter a title";
     title = title.trim();
     if (!title) return "please enter a title";
 
@@ -42,7 +41,6 @@ const ProjectTasks: FC<ProjectTasksProps> = ({ projectId, tasks }) => {
       payload: { projectId, title },
     });
 
-    // Reset the form state:
     return "";
   }
   const [formState, formAction, isPending] = useActionState(addTask, "");
