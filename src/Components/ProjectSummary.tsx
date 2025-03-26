@@ -25,6 +25,12 @@ const ProjectSummary: FC<ProjectSummaryProps> = ({
   // DEV, for later use of projectId:
   console.log("[ProjectSummary]: projectId: ", projectId);
 
+  const localeDate = dueDate.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
   // JSX:
   return (
     <header className='mb-4 border-b-2 border-stone-300 pb-4'>
@@ -37,13 +43,7 @@ const ProjectSummary: FC<ProjectSummaryProps> = ({
           Delete
         </button>
       </div>
-      <p className='mb-4 text-stone-400'>
-        {dueDate.toLocaleDateString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        })}
-      </p>
+      <p className='mb-4 text-stone-400'>{localeDate}</p>
       <p className='whitespace-pre-wrap text-stone-600'>{description}</p>
     </header>
   );
