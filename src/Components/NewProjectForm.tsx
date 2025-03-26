@@ -85,12 +85,13 @@ const NewProjectForm: FC = () => {
       errors.description = "please enter the project description";
     }
     // Due date:
-    let dueDate: string | false | Date = checkInput("project_due_date");
+    const dueDate: string | false | Date = checkInput("project_due_date");
+    let dueDateObj;
     if (!dueDate) {
       errors.dueDate = "please enter a valid due date for the project";
     } else {
-      dueDate = new Date(dueDate);
-      if (isNaN(dueDate.getTime())) {
+      dueDateObj = new Date(dueDate);
+      if (isNaN(dueDateObj.getTime())) {
         errors.dueDate = "please enter a valid due date for the project";
       }
     }
@@ -101,13 +102,13 @@ const NewProjectForm: FC = () => {
       !errors.dueDate &&
       title &&
       description &&
-      dueDate instanceof Date
+      dueDateObj
     ) {
       // If all inputs are valid:
       // Add new project:
       localDispatch({
         type: "ADD_PROJECT",
-        payload: { userId, title, description, dueDate },
+        payload: { userId, title, description, dueDate: dueDateObj },
       });
       //   Close modal:
       handleCloseModal();
@@ -119,7 +120,7 @@ const NewProjectForm: FC = () => {
       return {
         title: title || prevState.title,
         description: description || prevState.description,
-        dueDate: prevState.dueDate,
+        dueDate: dueDate || prevState.dueDate,
         errors, // new errors
       };
     }
@@ -149,15 +150,25 @@ const NewProjectForm: FC = () => {
     }
   }, [formState]);
 
+  //   For "min" attribute of the date-input:
+  const today = new Date().toISOString().split("T")[0];
+
+  //   Handlers:
+  function handleCancel(): void {
+    if (!formState.title && !formState.description && !formState.dueDate) {
+      // If all inputs are EMPTY, close Modal:
+      handleCloseModal();
+    } else {
+      // otherwise, reset inputs:
+      formAction("reset");
+    }
+  }
   // JSX:
   return (
     <form action={formAction} key='reset'>
       <menu className='my-4 flex items-center justify-end gap-4'>
         <button
-          onClick={() => {
-            formAction("reset");
-          }}
-          //   onClick={handleCloseModal}
+          onClick={handleCancel}
           type='reset'
           disabled={isPending}
           className='text-stone-800 hover:text-stone-950 disabled:text-stone-500'
@@ -212,6 +223,8 @@ const NewProjectForm: FC = () => {
           id='project_due_date'
           name='project_due_date'
           type='date'
+          min={today}
+          step={1}
           defaultValue={formState.dueDate}
           className='w-full rounded-sm border-b-2 border-stone-300 bg-stone-200 p-1 text-stone-600 focus:border-stone-600 focus:outline-none'
         />
