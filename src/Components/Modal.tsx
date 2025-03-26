@@ -6,7 +6,7 @@
 import { useImperativeHandle, forwardRef, useRef } from "react";
 import { createPortal } from "react-dom";
 // Context:
-import modalCtx from "../context/modalCtx";
+import modalCloseCtx from "../context/modalCloseCtx";
 // Hooks:
 // Components:
 // CSS:
@@ -49,9 +49,9 @@ const Modal = forwardRef<ModalOpenHandle, ModalProps>(
             className='absolute top-18 left-1/3 rounded-md p-4 shadow-md backdrop:bg-stone-900/90'
           >
             <div className='mt-4 mb-9 w-[35rem]'>
-              <modalCtx.Provider value={{ handleCloseModal }}>
+              <modalCloseCtx.Provider value={{ handleCloseModal }}>
                 {children}
-              </modalCtx.Provider>
+              </modalCloseCtx.Provider>
             </div>
           </dialog>,
           modalRootEl,

@@ -7,7 +7,7 @@ import { use, useRef, useEffect, useActionState } from "react";
 // Context:
 import projectsLocalCtx from "../context/projectsLocalCtx";
 // Hooks:
-import useModal from "../hooks/useModal";
+import useCloseModal from "../hooks/useCloseModal";
 // Components:
 // CSS:
 // Types, interfaces and enumns:
@@ -35,7 +35,7 @@ const userId = "User_00";
 const NewProjectForm: FC = () => {
   // Context:
   const { localDispatch } = use(projectsLocalCtx);
-  const { handleCloseModal } = useModal();
+  const { handleCloseModal } = useCloseModal();
 
   // Refs:
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -53,20 +53,24 @@ const NewProjectForm: FC = () => {
   //   For the task title input:
   async function createProject(
     prevState: FormState,
-    formData: FormData | null,
+    formData: FormData | "reset",
   ): Promise<FormState> {
     // For the "Cancel" button (reset):
-    if (formData === null) return initFormState;
+    if (formData === "reset") return initFormState;
+
     // VALIDATION:
     const errors: FormState["errors"] = {};
+    // Helper function:
     function checkInput(inputId: string): false | string {
-      if (!formData) return false;
+      if (formData === "reset") return false; // TS BS
+
       let string = formData.get(inputId);
       if (typeof string !== "string") {
         return false;
       }
       string = string.trim();
       if (!string) return false;
+
       return string;
     }
 
@@ -151,7 +155,7 @@ const NewProjectForm: FC = () => {
       <menu className='my-4 flex items-center justify-end gap-4'>
         <button
           onClick={() => {
-            formAction(null);
+            formAction("reset");
           }}
           //   onClick={handleCloseModal}
           type='reset'
