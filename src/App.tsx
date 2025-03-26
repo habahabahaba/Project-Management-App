@@ -11,21 +11,20 @@ import projectsLocalCtx from "./context/projectsLocalCtx";
 import Sidebar from "./Components/Sidebar";
 import ProjectDetails from "./Components/ProjectDetails";
 import Fallback from "./Components/Fallback";
-import NewProjectDialog from "./Components/NewProjectDialog";
+import NewProjectModal from "./Components/NewProjectModal";
 // CSS:
 // Types, interfaces and enumns:
-import type { NewProjectDialogHandle } from "./Components/NewProjectDialog";
+import type { ModalOpenHandle } from "./Components/Modal";
 
 function App() {
   // State:
-  const newProjectDialogHandle = useRef<NewProjectDialogHandle>(null);
+  const DialogHandle = useRef<ModalOpenHandle>(null);
   // Context:
   const { selectedId, selectId } = use(projectsLocalCtx);
   // Handlers:
   function handleCreateNewProject() {
     selectId(null);
-    newProjectDialogHandle?.current?.showModal();
-    newProjectDialogHandle?.current?.focus();
+    DialogHandle?.current?.showModal();
   }
   // JSX:
   return (
@@ -36,7 +35,7 @@ function App() {
       ) : (
         <Fallback onCreateNewProject={handleCreateNewProject} />
       )}
-      <NewProjectDialog ref={newProjectDialogHandle} />
+      <NewProjectModal ref={DialogHandle} />
     </main>
   );
 }

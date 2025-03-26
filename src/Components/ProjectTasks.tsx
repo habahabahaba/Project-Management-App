@@ -19,12 +19,16 @@ interface ProjectTasksProps {
 }
 
 const ProjectTasks: FC<ProjectTasksProps> = ({ projectId, tasks }) => {
+  //   State:
+  const unclearedTasks = tasks.filter((task) => !task.cleared);
+
   // Handlers:
   const { localDispatch } = use(projectsLocalCtx);
   function handleClearTask(taskId: string): void {
     localDispatch({ type: "CLEAR_TASK", payload: { projectId, taskId } });
   }
 
+  //   Form logic:
   //   For the task title input:
   async function addTask(
     currentState: string,
@@ -43,9 +47,9 @@ const ProjectTasks: FC<ProjectTasksProps> = ({ projectId, tasks }) => {
 
     return "";
   }
+
   const [formState, formAction, isPending] = useActionState(addTask, "");
 
-  const unclearedTasks = tasks.filter((task) => !task.cleared);
   // JSX:
   return (
     <>
