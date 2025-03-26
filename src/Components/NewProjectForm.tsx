@@ -34,7 +34,7 @@ const userId = "User_00";
 
 const NewProjectForm: FC = () => {
   // Context:
-  const { localDispatch } = use(projectsLocalCtx);
+  const { localDispatch, localState, selectId } = use(projectsLocalCtx);
   const { handleCloseModal } = useCloseModal();
 
   // Refs:
@@ -49,13 +49,26 @@ const NewProjectForm: FC = () => {
     }
   }, []);
 
+  // After NEW project is added, open the new project details and close the modal:
+  const projectWasCreatedRef = useRef<boolean>(false);
+  useEffect(() => {
+    if (projectWasCreatedRef.current) {
+      const newProjectId = localState[0]["projectId"] || null;
+      selectId(newProjectId);
+      handleCloseModal();
+      projectWasCreatedRef.current = false;
+
+      console.log("[NewProjectForm]: useEffect fired on created project!");
+    }
+  }, [localState, selectId, handleCloseModal]);
+
   //   FORM LOGIC:
-  //   For the task title input:
+  //   Action:
   async function createProject(
     prevState: FormState,
     formData: FormData | "reset",
   ): Promise<FormState> {
-    // For the "Cancel" button (reset):
+    // For the "Cancel" button (reset form):
     if (formData === "reset") return initFormState;
 
     // VALIDATION:
@@ -110,8 +123,9 @@ const NewProjectForm: FC = () => {
         type: "ADD_PROJECT",
         payload: { userId, title, description, dueDate: dueDateObj },
       });
+      projectWasCreatedRef.current = true;
       //   Close modal:
-      handleCloseModal();
+      //   handleCloseModal();
       //   Reset form inputs:
       return initFormState;
     } else {
