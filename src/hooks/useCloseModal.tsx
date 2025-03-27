@@ -5,14 +5,14 @@
 // React:
 import { use } from "react";
 // Context:
-import modalCtx from "../context/modalCtx";
+import modalCloseCtx from "../context/modalCloseCtx";
 // Hooks:
 // Components:
 // CSS:
 // Types, interfaces and enumns:
 
-export default function useModal() {
-  const context = use(modalCtx);
+export default function useCloseModal() {
+  const context = use(modalCloseCtx);
   if (!context) {
     throw new Error("useModal must be used within a Modal component");
   }

@@ -1,12 +1,12 @@
 // React:
 import { createContext } from "react";
 // Types, interfaces and enumns:
-type ModalCtxValue = {
+type ModalCloseCtxValue = {
   handleCloseModal: () => void;
 };
 
-const modalCtx = createContext<ModalCtxValue>({
+const modalCloseCtx = createContext<ModalCloseCtxValue>({
   handleCloseModal() {},
 });
 
-export default modalCtx;
+export default modalCloseCtx;
