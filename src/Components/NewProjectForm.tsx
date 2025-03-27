@@ -55,15 +55,15 @@ const NewProjectForm: FC = () => {
 
   // After NEW project is added, open the new project details and close the modal:
   useEffect(() => {
-    // if (lastCreatedProjectId) {
-    selectId(lastCreatedProjectId);
-    // }
-    handleCloseModal();
+    if (lastCreatedProjectId) {
+      selectId(lastCreatedProjectId);
+      handleCloseModal();
+    }
 
     console.log(
-      "[NewProjectForm]: lastCreatedProjectId related useEffect fired!",
+      "[NewProjectForm]: lastCreatedProjectId related useEffect fired with id of: ",
+      lastCreatedProjectId,
     );
-    // }
   }, [lastCreatedProjectId, selectId, handleCloseModal]);
 
   //   FORM LOGIC:
