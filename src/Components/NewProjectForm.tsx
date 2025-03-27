@@ -54,16 +54,16 @@ const NewProjectForm: FC = () => {
   }, []);
 
   // After NEW project is added, open the new project details and close the modal:
-  const projectWasCreatedRef = useRef<boolean>(false);
   useEffect(() => {
-    if (projectWasCreatedRef.current) {
-      //   const newProjectId = localState[0]["projectId"] || null;
-      selectId(lastCreatedProjectId);
-      handleCloseModal();
-      //   projectWasCreatedRef.current = false;
+    // if (lastCreatedProjectId) {
+    selectId(lastCreatedProjectId);
+    // }
+    handleCloseModal();
 
-      console.log("[NewProjectForm]: useEffect fired on created project!");
-    }
+    console.log(
+      "[NewProjectForm]: lastCreatedProjectId related useEffect fired!",
+    );
+    // }
   }, [lastCreatedProjectId, selectId, handleCloseModal]);
 
   //   FORM LOGIC:
@@ -127,9 +127,8 @@ const NewProjectForm: FC = () => {
         type: "ADD_PROJECT",
         payload: { userId, title, description, dueDate: dueDateObj },
       });
-      projectWasCreatedRef.current = true;
-      //   Close modal:
-      //   handleCloseModal();
+      //   Close modal: is done in useEffect
+
       //   Reset form inputs:
       return initFormState;
     } else {

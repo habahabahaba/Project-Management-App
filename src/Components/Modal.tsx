@@ -3,7 +3,7 @@
 // Store:
 // React Router:
 // React:
-import { useImperativeHandle, forwardRef, useRef } from "react";
+import { useImperativeHandle, forwardRef, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 // Context:
 import modalCloseCtx from "../context/modalCloseCtx";
@@ -31,9 +31,9 @@ const Modal = forwardRef<ModalOpenHandle, ModalProps>(
     }));
 
     // Handlers:
-    function handleCloseModal() {
+    const handleCloseModal = useCallback(() => {
       dialogRef.current?.close();
-    }
+    }, []);
 
     // JSX:
     return modalRootEl
