@@ -16,24 +16,30 @@ interface ModalProps {
   children: ReactNode;
 }
 
-export type ModalOpenHandle = {
-  showModal: () => void;
+export type ModalHandle = {
+  handleShowModal: () => void;
+  handleCloseModal: () => void;
 };
 
 const modalRootEl = document.getElementById("modal-root");
-const Modal = forwardRef<ModalOpenHandle, ModalProps>(
-  ({ children }: ModalProps, ref: ForwardedRef<ModalOpenHandle>) => {
+const Modal = forwardRef<ModalHandle, ModalProps>(
+  ({ children }: ModalProps, ref: ForwardedRef<ModalHandle>) => {
+    // Refs:
     const dialogRef = useRef<HTMLDialogElement>(null);
-    useImperativeHandle(ref, () => ({
-      showModal: () => {
-        dialogRef.current?.showModal();
-      },
-    }));
 
     // Handlers:
+    const handleShowModal = useCallback(() => {
+      dialogRef.current?.showModal();
+    }, []);
     const handleCloseModal = useCallback(() => {
       dialogRef.current?.close();
     }, []);
+
+    // Imperative handle:
+    useImperativeHandle(ref, () => ({
+      handleShowModal,
+      handleCloseModal,
+    }));
 
     // JSX:
     return modalRootEl

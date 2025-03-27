@@ -12,15 +12,10 @@ import NewProjectForm from "./NewProjectForm";
 // CSS:
 // Types, interfaces and enumns:
 import type { ForwardedRef } from "react";
-import type { ModalOpenHandle } from "./Modal";
+import type { ModalHandle } from "./Modal";
 
-export type NewProjectModalOpenHandle = {
-  showModal: () => void;
-  focus: () => void;
-};
-
-const NewProjectModal = forwardRef<ModalOpenHandle>(
-  (_, ref: ForwardedRef<ModalOpenHandle>) => {
+const NewProjectModal = forwardRef<ModalHandle>(
+  (_, ref: ForwardedRef<ModalHandle>) => {
     // JSX:
     return (
       <Modal ref={ref}>

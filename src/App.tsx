@@ -14,17 +14,17 @@ import Fallback from "./Components/Fallback";
 import NewProjectModal from "./Components/NewProjectModal";
 // CSS:
 // Types, interfaces and enumns:
-import type { ModalOpenHandle } from "./Components/Modal";
+import type { ModalHandle } from "./Components/Modal";
 
 function App() {
   // State:
-  const DialogHandle = useRef<ModalOpenHandle>(null);
+  const DialogHandle = useRef<ModalHandle>(null);
   // Context:
   const { selectedId, selectId } = use(projectsLocalCtx);
   // Handlers:
   function handleCreateNewProject() {
     selectId(null);
-    DialogHandle?.current?.showModal();
+    DialogHandle?.current?.handleShowModal();
   }
   // JSX:
   return (
