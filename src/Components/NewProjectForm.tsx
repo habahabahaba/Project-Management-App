@@ -34,7 +34,11 @@ const userId = "User_00";
 
 const NewProjectForm: FC = () => {
   // Context:
-  const { localDispatch, localState, selectId } = use(projectsLocalCtx);
+  const {
+    localDispatch,
+    localState: { lastCreatedProjectId },
+    selectId,
+  } = use(projectsLocalCtx);
   const { handleCloseModal } = useCloseModal();
 
   // Refs:
@@ -53,14 +57,14 @@ const NewProjectForm: FC = () => {
   const projectWasCreatedRef = useRef<boolean>(false);
   useEffect(() => {
     if (projectWasCreatedRef.current) {
-      const newProjectId = localState[0]["projectId"] || null;
-      selectId(newProjectId);
+      //   const newProjectId = localState[0]["projectId"] || null;
+      selectId(lastCreatedProjectId);
       handleCloseModal();
-      projectWasCreatedRef.current = false;
+      //   projectWasCreatedRef.current = false;
 
       console.log("[NewProjectForm]: useEffect fired on created project!");
     }
-  }, [localState, selectId, handleCloseModal]);
+  }, [lastCreatedProjectId, selectId, handleCloseModal]);
 
   //   FORM LOGIC:
   //   Action:

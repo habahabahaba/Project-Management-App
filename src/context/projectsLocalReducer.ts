@@ -1,20 +1,20 @@
 // 3rd party:
 // Utils:
-import generateId from '../utils/generateId';
+import generateId from "../utils/generateId";
 // Types, interfaces and enumns:
-import type { Task, Project, Projects } from './projects.types';
+import type { Task, Project, ProjectsState } from "./projects.types";
 type AddProjectPayload = Pick<
   Project,
-  'userId' | 'title' | 'description' | 'dueDate'
+  "userId" | "title" | "description" | "dueDate"
 >;
-type AddTaskPayload = Pick<Task, 'projectId' | 'title'>;
-type ClearTaskPayload = Pick<Task, 'projectId' | 'taskId'>;
+type AddTaskPayload = Pick<Task, "projectId" | "title">;
+type ClearTaskPayload = Pick<Task, "projectId" | "taskId">;
 
 export type ProjectsAction =
-  | { type: 'ADD_PROJECT'; payload: AddProjectPayload }
-  | { type: 'DELETE_PROJECT'; payload: { projectId: string } }
-  | { type: 'ADD_TASK'; payload: AddTaskPayload }
-  | { type: 'CLEAR_TASK'; payload: ClearTaskPayload };
+  | { type: "ADD_PROJECT"; payload: AddProjectPayload }
+  | { type: "DELETE_PROJECT"; payload: { projectId: string } }
+  | { type: "ADD_TASK"; payload: AddTaskPayload }
+  | { type: "CLEAR_TASK"; payload: ClearTaskPayload };
 
 export class ProjectModel implements Project {
   constructor(addProjectPayload: AddProjectPayload) {
@@ -57,52 +57,64 @@ export class TaskModel implements Task {
 }
 
 export default function projectsLocalReducer(
-  state: Projects,
-  action: ProjectsAction
-): Projects | never {
+  state: ProjectsState,
+  action: ProjectsAction,
+): ProjectsState | never {
   switch (action.type) {
-    case 'ADD_PROJECT': {
+    case "ADD_PROJECT": {
       const newProject = new ProjectModel(action.payload);
-
+      const lastCreatedProjectId = newProject.projectId;
       console.log(`[ADD_PROJECT]: ${JSON.stringify(newProject, null, 2)}`);
 
-      return [newProject, ...state];
+      return {
+        projects: [newProject, ...state.projects],
+        lastCreatedProjectId,
+      };
     }
-    case 'DELETE_PROJECT': {
+    case "DELETE_PROJECT": {
       console.log(`[DELETE_PROJECT]: ${action.payload.projectId}`);
 
-      return state.filter(
-        (project) => project.projectId !== action.payload.projectId
-      );
+      return {
+        projects: state.projects.filter(
+          (project) => project.projectId !== action.payload.projectId,
+        ),
+        lastCreatedProjectId: state.lastCreatedProjectId,
+      };
     }
-    case 'ADD_TASK': {
+    case "ADD_TASK": {
       const newTask = new TaskModel(action.payload);
 
       console.log(`[ADD_TASK]: ${JSON.stringify(newTask, null, 2)}`);
 
-      return state.map((project) =>
-        project.projectId === newTask.projectId
-          ? { ...project, tasks: [...project.tasks, newTask] }
-          : project
-      );
+      return {
+        projects: state.projects.map((project) =>
+          project.projectId === newTask.projectId
+            ? { ...project, tasks: [...project.tasks, newTask] }
+            : project,
+        ),
+        lastCreatedProjectId: state.lastCreatedProjectId,
+      };
     }
-    case 'CLEAR_TASK': {
+    case "CLEAR_TASK": {
       console.log(
-        `[DELETE_PROJECT] projectId: ${action.payload.projectId}, taskId: ${action.payload.taskId}`
+        `[DELETE_PROJECT] projectId: ${action.payload.projectId}, taskId: ${action.payload.taskId}`,
       );
 
-      return state.map((project) =>
-        project.projectId === action.payload.projectId
-          ? {
-              ...project,
-              tasks: project.tasks.filter(
-                ({ taskId }) => taskId !== action.payload.taskId
-              ),
-            }
-          : project
-      );
+      return {
+        projects: state.projects.map((project) =>
+          project.projectId === action.payload.projectId
+            ? {
+                ...project,
+                tasks: project.tasks.filter(
+                  ({ taskId }) => taskId !== action.payload.taskId,
+                ),
+              }
+            : project,
+        ),
+        lastCreatedProjectId: state.lastCreatedProjectId,
+      };
     }
     default:
-      throw new Error('[projectsReducer] encountered the UNKNOWN ACTION !!!');
+      throw new Error("[projectsReducer] encountered the UNKNOWN ACTION !!!");
   }
 }

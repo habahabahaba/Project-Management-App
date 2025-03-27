@@ -16,3 +16,7 @@ export interface Project {
   tasks: Task[];
 }
 export type Projects = Project[];
+export type ProjectsState = {
+  lastCreatedProjectId: string | null;
+  projects: Projects;
+};

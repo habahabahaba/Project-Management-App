@@ -18,24 +18,27 @@ interface ProjectsLocalProviderProps {
 }
 
 // DEV ONLY DUMMY PROJECTS initial state:
-import type { Projects } from "./projects.types";
+import type { ProjectsState } from "./projects.types";
 import { ProjectModel } from "./projectsLocalReducer";
-const initState: Projects = [
-  new ProjectModel({
-    userId: "0",
-    title: "Learning React",
-    description: `Learn React from the ground up.
+const initState: ProjectsState = {
+  projects: [
+    new ProjectModel({
+      userId: "0",
+      title: "Learning React",
+      description: `Learn React from the ground up.
     
 Start with the basics, finish with advanced knowledge.`,
-    dueDate: new Date("2024-12-29"),
-  }),
-  new ProjectModel({
-    userId: "0",
-    title: "Master React",
-    description: "Do master React.",
-    dueDate: new Date("2025-11-01"),
-  }),
-];
+      dueDate: new Date("2024-12-29"),
+    }),
+    new ProjectModel({
+      userId: "0",
+      title: "Master React",
+      description: "Do master React.",
+      dueDate: new Date("2025-11-01"),
+    }),
+  ],
+  lastCreatedProjectId: null,
+};
 
 const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   children,

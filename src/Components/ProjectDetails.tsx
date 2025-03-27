@@ -16,7 +16,10 @@ import type { FC } from "react";
 
 const ProjectDetails: FC = () => {
   // Context:
-  const { selectedId, localState: projects } = use(projectsLocalCtx);
+  const {
+    selectedId,
+    localState: { projects },
+  } = use(projectsLocalCtx);
   const selectedProject = projects.find(
     (project) => project.projectId === selectedId,
   );
