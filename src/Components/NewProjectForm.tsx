@@ -135,9 +135,15 @@ const NewProjectForm: FC = () => {
       // If there's an error:
       // Persist entered values and set errors in the formState:
       return {
-        title: title || prevState.title,
-        description: description || prevState.description,
-        dueDate: dueDate || prevState.dueDate,
+        title: errors.title
+          ? "" // for error message to be shown as a placeholder
+          : title || prevState.title,
+        description: errors.description
+          ? "" // for error message to be shown as a placeholder
+          : description || prevState.description,
+        dueDate: errors.dueDate
+          ? "" // for error message to be shown as a placeholder
+          : dueDate || prevState.dueDate,
         errors, // new errors
       };
     }
