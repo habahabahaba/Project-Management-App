@@ -23,7 +23,7 @@ function App() {
   const { selectedId, selectId } = use(projectsLocalCtx);
   // Handlers:
   function handleCreateNewProject() {
-    selectId(null);
+    selectId(undefined);
     DialogHandle?.current?.handleShowModal();
   }
   // JSX:

@@ -37,7 +37,7 @@ Start with the basics, finish with advanced knowledge.`,
       dueDate: new Date("2025-11-01"),
     }),
   ],
-  lastCreatedProjectId: null,
+  lastCreatedProjectId: undefined,
 };
 
 const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
@@ -50,7 +50,7 @@ const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   );
 
   // For selecting a project:
-  const [selectedId, selectId] = useState<string | null>(null);
+  const [selectedId, selectId] = useState<string | undefined>(undefined);
 
   const ctxValue = {
     localState: ProjectsLocalState,

@@ -35,7 +35,7 @@ const ProjectDetails: FC = () => {
   const { selectId, localDispatch } = use(projectsLocalCtx);
 
   function handleDeleteProject(): void {
-    selectId(null);
+    selectId(undefined);
     localDispatch({ type: "DELETE_PROJECT", payload: { projectId } });
   }
 

@@ -7,14 +7,14 @@ import type { ProjectsAction } from "./projectsLocalReducer";
 type projectsLocalCtxValue = {
   localState: ProjectsState;
   localDispatch: Dispatch<ProjectsAction>;
-  selectedId: string | null;
-  selectId: Dispatch<SetStateAction<string | null>>;
+  selectedId: string | undefined;
+  selectId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 const initState: projectsLocalCtxValue = {
-  localState: { projects: [], lastCreatedProjectId: null },
+  localState: { projects: [], lastCreatedProjectId: undefined },
   localDispatch: () => {},
-  selectedId: null,
+  selectedId: undefined,
   selectId: () => {},
 };
 const projectsLocalCtx = createContext<projectsLocalCtxValue>(initState);

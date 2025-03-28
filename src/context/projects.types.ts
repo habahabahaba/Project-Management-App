@@ -17,6 +17,6 @@ export interface Project {
 }
 export type Projects = Project[];
 export type ProjectsState = {
-  lastCreatedProjectId: string | null;
+  lastCreatedProjectId: string | undefined;
   projects: Projects;
 };
