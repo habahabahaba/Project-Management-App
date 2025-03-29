@@ -1,9 +1,12 @@
+// Utils:
+import toLocalStorage from "../utils/toLocalStorage";
+import fromLocalStorage from "../utils/fromLocalStorage";
 // 3rd party:
 // Redux RTK:
 // Store:
 // React Router:
 // React:
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 // Reducer:
 import projectsLocalReducer from "./projectsLocalReducer";
 // Context:
@@ -13,12 +16,12 @@ import projectsLocalCtx from "./projectsLocalCtx";
 // CSS:
 // Types, interfaces and enumns:
 import type { FC, ReactNode } from "react";
+import type { ProjectsState } from "./projects.types";
 interface ProjectsLocalProviderProps {
   children: ReactNode;
 }
 
 // DEV ONLY DUMMY PROJECTS initial state:
-import type { ProjectsState } from "./projects.types";
 import { ProjectModel } from "./projectsLocalReducer";
 const initState: ProjectsState = {
   projects: [
@@ -40,6 +43,8 @@ Start with the basics, finish with advanced knowledge.`,
   lastCreatedProjectId: undefined,
 };
 
+const localStorageKey = "PROJECTS_LOCAL_STATE"; // for syncing projects state.
+
 const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   children,
 }) => {
@@ -47,7 +52,13 @@ const ProjectsLocalProvider: FC<ProjectsLocalProviderProps> = ({
   const [ProjectsLocalState, ProjectsLocalDispatch] = useReducer(
     projectsLocalReducer,
     initState,
+    () => fromLocalStorage<ProjectsState>(localStorageKey) || initState,
   );
+
+  // For syncing Projects-State to local storage:
+  useEffect(() => {
+    toLocalStorage<ProjectsState>(localStorageKey, ProjectsLocalState);
+  }, [ProjectsLocalState]);
 
   // For selecting a project:
   const [selectedId, selectId] = useState<string | undefined>(undefined);
