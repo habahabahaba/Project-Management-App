@@ -11,7 +11,7 @@ export interface Project {
   title: string;
   description: string;
   createdAt: Date;
-  dueDate: Date;
+  dueDate: number;
   completed: boolean;
   tasks: Task[];
 }

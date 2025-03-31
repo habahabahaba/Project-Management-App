@@ -35,7 +35,7 @@ export class ProjectModel implements Project {
   readonly createdAt: Date;
   public title: string;
   public description: string;
-  public dueDate: Date;
+  public dueDate: number;
   public completed: boolean;
   public tasks: Task[];
 }

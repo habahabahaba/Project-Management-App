@@ -102,15 +102,12 @@ const NewProjectForm: FC = () => {
       errors.description = "please enter the project description";
     }
     // Due date:
-    const dueDate: string | false | Date = checkInput("project_due_date");
-    let dueDateObj;
-    if (!dueDate) {
+    const dueDate = checkInput("project_due_date");
+    // Converting to timestamp:
+    const dueDateStamp = Date.parse(checkInput("project_due_date") || "");
+    // If it not a valid date:
+    if (!dueDate || !dueDateStamp) {
       errors.dueDate = "please enter a valid due date for the project";
-    } else {
-      dueDateObj = new Date(dueDate);
-      if (isNaN(dueDateObj.getTime())) {
-        errors.dueDate = "please enter a valid due date for the project";
-      }
     }
 
     if (
@@ -119,13 +116,13 @@ const NewProjectForm: FC = () => {
       !errors.dueDate &&
       title &&
       description &&
-      dueDateObj
+      dueDateStamp
     ) {
       // If all inputs are valid:
       // Add new project:
       localDispatch({
         type: "ADD_PROJECT",
-        payload: { userId, title, description, dueDate: dueDateObj },
+        payload: { userId, title, description, dueDate: dueDateStamp },
       });
       //   Close modal: is done in useEffect
 

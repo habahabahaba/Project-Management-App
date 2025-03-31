@@ -3,6 +3,7 @@
 // Store:
 // React Router:
 // React:
+import { useMemo } from "react";
 // Context:
 // Hooks:
 // Components:
@@ -12,8 +13,8 @@ import type { FC } from "react";
 import { Project } from "../context/projects.types";
 type ProjectSummaryProps = Pick<
   Project,
-  "projectId" | "title" | "dueDate" | "description"
-> & { onDelete: () => void };
+  "projectId" | "title" | "description"
+> & { dueDate: number | Date } & { onDelete: () => void }; // dueDate: Date - for later expansion.
 
 const ProjectSummary: FC<ProjectSummaryProps> = ({
   projectId,
@@ -24,12 +25,16 @@ const ProjectSummary: FC<ProjectSummaryProps> = ({
 }) => {
   // DEV, for later use of projectId:
   console.log("[ProjectSummary]: projectId: ", projectId);
+  console.log("[ProjectSummary]: dueDate: ", dueDate);
 
-  const localeDate = dueDate.toLocaleDateString(undefined, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  const localeDate = useMemo(() => {
+    const dateObj = dueDate instanceof Date ? dueDate : new Date(dueDate);
+    return dateObj.toLocaleDateString(undefined, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }, [dueDate]);
 
   // JSX:
   return (

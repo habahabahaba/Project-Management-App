@@ -27,7 +27,7 @@ const ProjectDetails: FC = () => {
     projectId: "",
     title: "",
     description: "",
-    dueDate: new Date(),
+    dueDate: 0,
     tasks: [],
   };
 

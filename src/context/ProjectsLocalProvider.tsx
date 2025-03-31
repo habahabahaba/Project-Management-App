@@ -31,13 +31,13 @@ const initState: ProjectsState = {
       description: `Learn React from the ground up.
     
 Start with the basics, finish with advanced knowledge.`,
-      dueDate: new Date("2024-12-29"),
+      dueDate: new Date("2024-12-29").getTime(),
     }),
     new ProjectModel({
       userId: "0",
       title: "Master React",
       description: "Do master React.",
-      dueDate: new Date("2025-11-01"),
+      dueDate: new Date("2025-11-01").getTime(),
     }),
   ],
   lastCreatedProjectId: undefined,
