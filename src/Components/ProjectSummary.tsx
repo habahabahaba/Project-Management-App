@@ -14,7 +14,7 @@ import { Project } from "../context/projects.types";
 type ProjectSummaryProps = Pick<
   Project,
   "projectId" | "title" | "description"
-> & { dueDate: number | Date } & { onDelete: () => void }; // dueDate: Date - for later expansion.
+> & { dueDate: number | string | Date } & { onDelete: () => void }; // dueDate: Date - for later expansion.
 
 const ProjectSummary: FC<ProjectSummaryProps> = ({
   projectId,
