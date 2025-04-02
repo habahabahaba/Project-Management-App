@@ -7,6 +7,7 @@ import { use, useRef } from "react";
 // Context:
 import projectsLocalCtx from "../context/projectsLocalCtx";
 // Hooks:
+import useCloseModal from "../hooks/useCloseModal";
 // Components:
 // CSS:
 // Types, interfaces and enumns:
@@ -16,12 +17,15 @@ interface ExportImportFormProps {}
 const ExportImportForm: FC<ExportImportFormProps> = () => {
   // Context:
   const { localState, localDispatch } = use(projectsLocalCtx);
+  const { handleCloseModal } = useCloseModal();
 
   // Refs:
   const exportLinkRef = useRef<HTMLAnchorElement>(null);
 
-  // Handlers:
   const today = new Date().toISOString().split("T")[0];
+  const exportFilename = `My-projects-${today}.json`;
+
+  // Handlers:
   // Function to prepare the download link
   function prepareExport(): void {
     if (!exportLinkRef || !exportLinkRef.current) return;
@@ -31,14 +35,24 @@ const ExportImportForm: FC<ExportImportFormProps> = () => {
     });
     const url = URL.createObjectURL(jsonBlob);
     exportLinkRef.current.href = url;
-    exportLinkRef.current.download = `My-projects-${today}.json`;
+    exportLinkRef.current.download = exportFilename;
   }
 
   // JSX:
   return (
-    <menu className='my-4 flex flex-col items-start justify-end gap-4'>
+    <div className='flex flex-col items-start justify-end gap-4'>
+      <menu className='flex items-center justify-end gap-4 self-end'>
+        <button
+          onClick={handleCloseModal}
+          type='reset'
+          //   disabled={isPending}
+          className='text-stone-800 hover:text-stone-950 disabled:text-stone-500'
+        >
+          Cancel
+        </button>
+      </menu>
       <div className='mb-4 border-b-2 border-stone-300 pb-6'>
-        <h2 className='my-4 text-xl font-bold text-stone-700'>Export</h2>
+        <h2 className='my-2 text-xl font-bold text-stone-700'>Export</h2>
         <p className='mb-4 text-stone-400'>
           Click the link below to download your projects:
         </p>
@@ -47,13 +61,13 @@ const ExportImportForm: FC<ExportImportFormProps> = () => {
           onClick={prepareExport}
           className='cursor-pointer underline'
         >
-          {`My-projects-${today}.json`}
+          {exportFilename}
         </a>
       </div>
       <div>
-        <h2 className='my-4 text-xl font-bold text-stone-700'>Import</h2>
+        <h2 className='my-2 text-xl font-bold text-stone-700'>Import</h2>
       </div>
-    </menu>
+    </div>
   );
 };
 
