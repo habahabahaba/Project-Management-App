@@ -12,30 +12,40 @@ import Sidebar from "./Components/Sidebar";
 import ProjectDetails from "./Components/ProjectDetails";
 import Fallback from "./Components/Fallback";
 import NewProjectModal from "./Components/NewProjectModal";
+import ExportImportModal from "./Components/ExportImportModal";
 // CSS:
 // Types, interfaces and enumns:
 import type { ModalHandle } from "./Components/Modal";
 
 function App() {
-  // State:
-  const DialogHandle = useRef<ModalHandle>(null);
+  // Refs:
+  const newProjectDialogHandle = useRef<ModalHandle>(null);
+  const ExportImportDialogHandle = useRef<ModalHandle>(null);
   // Context:
   const { selectedId, selectId } = use(projectsLocalCtx);
   // Handlers:
-  function handleCreateNewProject() {
+  function handleOpenNewProjectForm() {
     selectId(undefined);
-    DialogHandle?.current?.handleShowModal();
+    newProjectDialogHandle?.current?.handleShowModal();
+  }
+  function handleOpenExportImportForm() {
+    selectId(undefined);
+    ExportImportDialogHandle?.current?.handleShowModal();
   }
   // JSX:
   return (
-    <main className='my-8 flex h-screen gap-8'>
-      <Sidebar onCreateNewProject={handleCreateNewProject} />
+    <main className='my-8 flex h-auto gap-8'>
+      <Sidebar
+        onCreateNewProject={handleOpenNewProjectForm}
+        onExportImport={handleOpenExportImportForm}
+      />
       {selectedId ? (
         <ProjectDetails />
       ) : (
-        <Fallback onCreateNewProject={handleCreateNewProject} />
+        <Fallback onCreateNewProject={handleOpenNewProjectForm} />
       )}
-      <NewProjectModal ref={DialogHandle} />
+      <NewProjectModal ref={newProjectDialogHandle} />
+      <ExportImportModal ref={ExportImportDialogHandle} />
     </main>
   );
 }
