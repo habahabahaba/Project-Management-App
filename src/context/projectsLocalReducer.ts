@@ -26,14 +26,14 @@ export class ProjectModel implements Project {
     this.dueDate = dueDate;
 
     this.projectId = generateId();
-    this.createdAt = new Date();
+    this.createdAt = Date.now();
     this.completed = false;
     this.tasks = [];
   }
 
   readonly userId: string;
   readonly projectId: string;
-  readonly createdAt: Date;
+  readonly createdAt: number;
   public title: string;
   public description: string;
   public dueDate: number;

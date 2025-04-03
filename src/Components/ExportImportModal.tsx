@@ -8,7 +8,8 @@ import { forwardRef } from "react";
 // Hooks:
 // Components:
 import Modal from "./Modal";
-import ExportImportForm from "./ExportImportForm";
+import ImportForm from "./ImportForm";
+import ExportLink from "./ExportLink";
 // CSS:
 // Types, interfaces and enumns:
 import type { ForwardedRef } from "react";
@@ -19,7 +20,8 @@ const ExportImportModal = forwardRef<ModalHandle>(
     // JSX:
     return (
       <Modal ref={ref}>
-        <ExportImportForm />
+        <ImportForm />
+        <ExportLink />
       </Modal>
     );
   },
