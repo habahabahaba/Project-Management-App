@@ -14,7 +14,8 @@ export type ProjectsAction =
   | { type: "ADD_PROJECT"; payload: AddProjectPayload }
   | { type: "DELETE_PROJECT"; payload: { projectId: string } }
   | { type: "ADD_TASK"; payload: AddTaskPayload }
-  | { type: "CLEAR_TASK"; payload: ClearTaskPayload };
+  | { type: "CLEAR_TASK"; payload: ClearTaskPayload }
+  | { type: "REPLACE_ALL_PROJECTS"; payload: ProjectsState };
 
 export class ProjectModel implements Project {
   constructor(addProjectPayload: AddProjectPayload) {
@@ -114,6 +115,8 @@ export default function projectsLocalReducer(
         lastCreatedProjectId: state.lastCreatedProjectId,
       };
     }
+    case "REPLACE_ALL_PROJECTS":
+      return action.payload;
     default:
       throw new Error("[projectsReducer] encountered the UNKNOWN ACTION !!!");
   }
