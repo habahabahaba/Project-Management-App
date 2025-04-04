@@ -37,10 +37,10 @@ const ExportLink: FC = () => {
 
   // JSX:
   return (
-    <div className='mt-9 border-t-2 border-stone-300 pt-3'>
+    <div className='mt-2 border-t-2 border-stone-300 pt-3'>
       <h2 className='my-4 text-xl font-bold text-stone-700'>Export:</h2>
       <p className='mb-4 text-sm font-bold text-stone-500 uppercase'>
-        Click the link below to download your projects
+        Click the link below to download your current projects
       </p>
       <a
         ref={exportLinkRef}

@@ -3,7 +3,7 @@
 // Store:
 // React Router:
 // React:
-import { use, useRef, useActionState, useEffect } from "react";
+import { use, useRef, useActionState, useEffect, startTransition } from "react";
 // Context:
 import projectsLocalCtx from "../context/projectsLocalCtx";
 // Hooks:
@@ -14,17 +14,14 @@ import useCloseModal from "../hooks/useCloseModal";
 import type { FC } from "react";
 import { isValidProjectsState } from "../context/projects.types";
 interface FormState {
-  file: string;
-  errors: {
-    file?:
-      | "couldn't load this file"
-      | "there was an error, reading this file"
-      | undefined;
-  };
+  errors?:
+    | "please select a valid file"
+    | "couldn't load the file"
+    | "there was an error, reading this file"
+    | undefined;
 }
 const initFormState: FormState = {
-  file: "",
-  errors: {},
+  errors: undefined,
 };
 
 const ImportForm: FC = () => {
@@ -50,18 +47,14 @@ const ImportForm: FC = () => {
     prevState: FormState,
     formData: FormData | "reset",
   ): Promise<FormState> {
-    console.log(`[loadProjects]`);
-
-    // For the "Cancel" button (reset form):
     if (formData === "reset") return initFormState;
 
     const file = formData.get("projects_file") as File | null;
-
-    if (!file) {
+    console.log(`[loadProjects] file: ${JSON.stringify(file, null, 2)}`);
+    if (!file || !(file instanceof File) || file.size === 0) {
       console.log(`[loadProjects]: NO FILE`);
       return {
-        ...prevState,
-        errors: { file: "couldn't load this file" },
+        errors: "please select a valid file",
       };
     }
 
@@ -81,16 +74,14 @@ const ImportForm: FC = () => {
       } else {
         console.log(`[loadProjects]: NOT a valid projects state`);
         return {
-          ...prevState,
-          errors: { file: "there was an error, reading this file" },
+          errors: "there was an error, reading this file",
         };
       }
     } catch (error) {
       if (error instanceof Error) console.error(error);
 
       return {
-        ...prevState,
-        errors: { file: "there was an error, reading this file" },
+        errors: "there was an error, reading this file",
       };
     }
   }
@@ -102,12 +93,21 @@ const ImportForm: FC = () => {
 
   //   Handlers:
   function handleCancel(): void {
-    if (!formState.file) {
-      // If input is EMPTY, close Modal:
-      handleCloseModal();
+    if (!fileInputRef || !fileInputRef.current) return;
+    if (fileInputRef.current.files?.length || formState.errors) {
+      console.log(
+        `[ImportForm][handleCancel] fileInputRef.current.files: ${fileInputRef?.current?.files}`,
+      );
+      // If a file is selected or there's an error message:
+      // Unselect the file;
+      fileInputRef.current.value = "";
+      // Remove the error message:
+      startTransition(() => {
+        formAction("reset");
+      });
     } else {
-      // otherwise, reset the input:
-      formAction("reset");
+      // If input is EMPTY and there's no error messages, close Modal:
+      handleCloseModal();
     }
   }
 
@@ -115,10 +115,7 @@ const ImportForm: FC = () => {
   return (
     <form action={formAction} key='reset'>
       <menu className='my-4 flex items-center justify-end gap-4'>
-        {/* <div className='w-full'> */}
         <h2 className='w-full text-xl font-bold text-stone-700'>Import:</h2>
-        {/* </div> */}
-
         <button
           onClick={handleCancel}
           type='reset'
@@ -141,7 +138,7 @@ const ImportForm: FC = () => {
       >
         select file (
         <span className='text-red-600'>
-          it will replace your current projects
+          this will replace your current projects
         </span>
         )
         <input
@@ -149,10 +146,9 @@ const ImportForm: FC = () => {
           id='projects_file'
           name='projects_file'
           type='file'
-          defaultValue={formState.file}
-          placeholder={formState.errors.file}
-          className='mt-2 w-full rounded-sm border-b-2 border-stone-300 bg-stone-200 p-1 text-stone-600 focus:border-stone-600 focus:outline-none'
+          className='my-2 w-full rounded-sm border-b-2 border-stone-300 bg-stone-200 p-1 text-stone-600 focus:border-stone-600 focus:outline-none'
         />
+        <p className='min-h-5 text-red-600'>{formState.errors || ""}</p>
       </label>
     </form>
   );
