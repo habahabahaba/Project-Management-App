@@ -14,8 +14,8 @@ import useCloseModal from "../hooks/useCloseModal";
 import type { FC } from "react";
 import { isValidProjectsState } from "../context/projects.types";
 interface FormState {
-  errors?:
-    | "please select a valid file"
+  errors:
+    | "please select a valid .json file"
     | "couldn't load the file"
     | "there was an error, reading this file"
     | undefined;
@@ -54,7 +54,7 @@ const ImportForm: FC = () => {
     if (!file || !(file instanceof File) || file.size === 0) {
       console.log(`[loadProjects]: NO FILE`);
       return {
-        errors: "please select a valid file",
+        errors: "please select a valid .json file",
       };
     }
 

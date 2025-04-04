@@ -3,7 +3,7 @@
 // Store:
 // React Router:
 // React:
-import { use, useRef, useEffect, useActionState } from "react";
+import { use, useRef, useEffect, useActionState, startTransition } from "react";
 // Context:
 import projectsLocalCtx from "../context/projectsLocalCtx";
 // Hooks:
@@ -180,7 +180,9 @@ const NewProjectForm: FC = () => {
       handleCloseModal();
     } else {
       // otherwise, reset inputs:
-      formAction("reset");
+      startTransition(() => {
+        formAction("reset");
+      });
     }
   }
   // JSX:
